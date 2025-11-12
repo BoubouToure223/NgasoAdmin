@@ -1,0 +1,243 @@
+<!-- Header -->
+<div class="dashboard-container">
+  <header class="header">
+    <div class="header-content">
+      <div class="search-container">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input 
+          type="text" 
+          placeholder="Rechercher..." 
+          [(ngModel)]="searchQuery"
+          class="search-input"
+        />
+      </div>
+      <div class="header-actions">
+        <button class="notification-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notification-badge"></span>
+        </button>
+        <div class="admin-profile">
+          <div class="avatar">A</div>
+          <span class="admin-name">Admin</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card" *ngFor="let stat of stats">
+        <div class="stat-content">
+          <div class="stat-info">
+            <p class="stat-title">{{ stat.title }}</p>
+            <h2 class="stat-value">{{ stat.value }}</h2>
+          </div>
+          <div class="stat-icon" [ngClass]="'icon-' + stat.iconColor">
+            <svg *ngIf="stat.iconClass === 'users'" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <svg *ngIf="stat.iconClass === 'folder'" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <svg *ngIf="stat.iconClass === 'file'" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <svg *ngIf="stat.iconClass === 'trending'" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+              <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+          </div>
+        </div>
+        <div class="stat-change">
+          <span class="change-value" [ngClass]="stat.changeType">{{ stat.change }}</span>
+          <span class="change-label">{{ stat.changeLabel }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Specialty Form -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Ajouter une nouvelle spécialité</h3>
+      </div>
+      <div class="card-content">
+        <form (ngSubmit)="addSpecialty()" class="specialty-form">
+          <input 
+            type="text" 
+            placeholder="Nom de la spécialité"
+            [(ngModel)]="newSpecialty"
+            name="specialty"
+            class="input"
+          />
+          <button type="submit" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Ajouter
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Specialties Table -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Spécialités</h3>
+      </div>
+      <div class="card-content">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Nb de professionnels</th>
+              <th class="text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let specialty of specialties">
+              <td class="font-medium">{{ specialty.name }}</td>
+              <td>{{ specialty.professionals }}</td>
+              <td class="text-right">
+                <button 
+                  class="btn-icon btn-delete"
+                  (click)="deleteSpecialty(specialty.name)"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Registration Requests Table -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Demandes d'inscription de professionnels</h3>
+      </div>
+      <div class="card-content">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nom complet</th>
+                <th>Spécialité demandée</th>
+                <th>Date d'inscription</th>
+                <th>Document justificatif</th>
+                <th>Statut</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let registration of registrations">
+                <td class="font-medium">{{ registration.name }}</td>
+                <td>{{ registration.specialty }}</td>
+                <td>{{ registration.date }}</td>
+                <td>
+                  <button 
+                    class="btn-link"
+                    (click)="viewDocument(registration.id)"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    Voir
+                  </button>
+                </td>
+                <td>
+                  <span class="badge badge-warning">{{ registration.status }}</span>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button 
+                      class="btn btn-success"
+                      (click)="validateRegistration(registration.id, registration.name)"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Valider
+                    </button>
+                    <button 
+                      class="btn btn-danger"
+                      (click)="rejectRegistration(registration.id, registration.name)"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                      Rejeter
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <div class="pagination-info">
+            Affichage de <span class="font-medium">1</span> à <span class="font-medium">5</span> sur <span class="font-medium">5</span> résultats
+          </div>
+          <div class="pagination-controls">
+            <button 
+              class="btn btn-outline"
+              [disabled]="currentPage === 1"
+              (click)="goToPage(currentPage - 1)"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+              Précédent
+            </button>
+            <button 
+              class="btn"
+              [ngClass]="{'btn-active': currentPage === 1}"
+              (click)="goToPage(1)"
+            >
+              1
+            </button>
+            <button 
+              class="btn btn-outline"
+              [ngClass]="{'btn-active': currentPage === 2}"
+              (click)="goToPage(2)"
+            >
+              2
+            </button>
+            <button 
+              class="btn btn-outline"
+              [disabled]="currentPage === totalPages"
+              (click)="goToPage(currentPage + 1)"
+            >
+              Suivant
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,17 @@
+<aside class="side" aria-label="Barre latérale">
+  <div class="brand">
+    <div class="logo">N'gaSo</div>
+    <div class="role">Admin</div>
+  </div>
+
+  <nav class="nav">
+    <a class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-current="page">Tableau de bord</a>
+    <a class="nav-item" routerLink="/users" routerLinkActive="active">Utilisateurs</a>
+    <a class="nav-item" routerLink="/projects" routerLinkActive="active">Projets</a>
+    <a class="nav-item" routerLink="/steps" routerLinkActive="active">Étapes</a>
+  </nav>
+
+  <div class="logout">
+    <button type="button" class="logout-btn" aria-label="Déconnexion">🔒 Déconnexion</button>
+  </div>
+</aside>

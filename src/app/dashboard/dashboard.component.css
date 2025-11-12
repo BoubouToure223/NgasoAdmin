@@ -1,0 +1,417 @@
+:host {
+  display: block;
+}
+
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* Header */
+.header {
+  background: white;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 1rem 2rem;
+}
+
+.header-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-container {
+  position: relative;
+  flex: 1;
+  max-width: 28rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.search-input:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.notification-btn {
+  position: relative;
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.notification-btn:hover {
+  color: #111827;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: #ef4444;
+  border-radius: 50%;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: #3b82f6;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.admin-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Main Content */
+.main-content {
+  padding: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.stat-content {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.stat-title {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.stat-icon {
+  flex-shrink: 0;
+}
+
+.stat-icon svg {
+  stroke-width: 1.5;
+}
+
+.icon-blue svg {
+  color: #3b82f6;
+}
+
+.icon-yellow svg {
+  color: #eab308;
+}
+
+.icon-purple svg {
+  color: #a855f7;
+}
+
+.icon-orange svg {
+  color: #f97316;
+}
+
+.stat-change {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.change-value {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.change-value.positive {
+  color: #16a34a;
+}
+
+.change-value.negative {
+  color: #dc2626;
+}
+
+.change-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Card */
+.card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.card-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+/* Specialty Form */
+.specialty-form {
+  display: flex;
+  gap: 1rem;
+}
+
+.input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.input:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.btn-success {
+  background: #16a34a;
+  color: white;
+  font-size: 0.813rem;
+  padding: 0.375rem 0.75rem;
+}
+
+.btn-success:hover {
+  background: #15803d;
+}
+
+.btn-danger {
+  background: white;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  font-size: 0.813rem;
+  padding: 0.375rem 0.75rem;
+}
+
+.btn-danger:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.btn-outline {
+  background: white;
+  border: 1px solid #e5e5e5;
+  color: #374151;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.813rem;
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: #f9fafb;
+}
+
+.btn-active {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-icon {
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.375rem;
+}
+
+.btn-delete {
+  color: #dc2626;
+}
+
+.btn-delete:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #3b82f6;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.btn-link:hover {
+  color: #2563eb;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table thead {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.table th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.table td {
+  padding: 1rem 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+.badge-warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
