@@ -1,0 +1,169 @@
+<div class="container">
+  <div class="brand-section" aria-hidden="true">
+    <div class="logo-container">
+      <img src="assets/img/logo-ngaso.png" alt="N'gaSo" class="logo-img" />
+      <div class="logo-text">N'gaSo</div>
+    </div>
+
+    <div class="brand-content">
+      <img src="assets/img/Container.png" alt="N'gaSo" class="brand-image" />
+      <h1 class="brand-heading">Gérez votre plateforme N'gaSo</h1>
+      <p class="brand-subheading">
+        Une solution moderne et professionnelle<br />
+        pour votre administration
+      </p>
+    </div>
+
+    <div class="copyright">
+      © 2025 N'gaSo — Tous droits réservés
+    </div>
+  </div>
+
+  <div class="login-section">
+    <div class="login-container">
+      <div class="login-card" role="form">
+        <div class="login-header">
+          <h2 class="login-title">Espace Administrateur</h2>
+          <p class="login-subtitle">Connectez-vous pour accéder au tableau de bord</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="submit()" novalidate autocomplete="off">
+          <div class="form-group">
+            <label for="email" class="form-label">Adresse email</label>
+            <div class="input-container" data-field="email">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M22 6L12 13L2 6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              <input
+                type="email"
+                id="email"
+                class="form-input"
+                formControlName="email"
+                autocomplete="off"
+                inputmode="email"
+                [attr.aria-invalid]="loginForm.controls.email.invalid && loginForm.controls.email.touched"
+              />
+            </div>
+            <p class="error" *ngIf="loginForm.controls.email.touched && loginForm.controls.email.invalid">
+              <span *ngIf="loginForm.controls.email.errors?.['required']">L'adresse email est obligatoire.</span>
+              <span *ngIf="loginForm.controls.email.errors?.['email']">Format d'adresse email invalide.</span>
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="form-label">Mot de passe</label>
+            <div class="input-container password-container" data-field="password">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M19 11H5C3.89543 11 3 11.8954 3 13V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V13C21 11.8954 20.1046 11 19 11Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              <input
+                [type]="passwordVisible ? 'text' : 'password'"
+                class="form-input"
+                id="password"
+                formControlName="password"
+                autocomplete="new-password"
+                [attr.aria-invalid]="
+                  loginForm.controls.password.invalid && loginForm.controls.password.touched
+                "
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                id="togglePassword"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-pressed]="passwordVisible"
+                [attr.aria-label]="passwordVisible ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+              >
+                <ng-container *ngIf="!passwordVisible; else hideIcon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                    <path
+                      d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                </ng-container>
+                <ng-template #hideIcon>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M17.94 17.94C16.2306 19.243 14.1491 19.9649 12 20C5 20 1 12 1 12C2.24389 9.68192 3.96914 7.65663 6.06 6.06M9.9 4.24C10.5883 4.0789 11.2931 3.99836 12 4C19 4 23 12 23 12C22.393 13.1356 21.6691 14.2048 20.84 15.19M14.12 14.12C13.8454 14.4148 13.5141 14.6512 13.1462 14.8151C12.7782 14.9791 12.3809 15.0673 11.9781 15.0744C11.5753 15.0815 11.1752 15.0074 10.8016 14.8565C10.4281 14.7056 10.0887 14.4811 9.80385 14.1962C9.51897 13.9113 9.29439 13.5719 9.14351 13.1984C8.99262 12.8249 8.91853 12.4247 8.92563 12.0219C8.93274 11.6191 9.02091 11.2219 9.18488 10.8539C9.34884 10.4859 9.58525 10.1547 9.88 9.88"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                    <path
+                      d="M1 1L23 23"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                </ng-template>
+              </button>
+            </div>
+            <p class="error" *ngIf="loginForm.controls.password.touched && loginForm.controls.password.invalid">
+              <span *ngIf="loginForm.controls.password.errors?.['required']">Le mot de passe est obligatoire.</span>
+              <span *ngIf="loginForm.controls.password.errors?.['minlength']">
+                Le mot de passe doit contenir au moins 6 caractères.
+              </span>
+            </p>
+          </div>
+
+          <div class="remember-me">
+            <input
+              type="checkbox"
+              id="remember"
+              class="remember-checkbox"
+              formControlName="remember"
+            />
+            <label for="remember" class="remember-label">Se souvenir de moi</label>
+          </div>
+
+          <button type="submit" class="login-button">Se connecter</button>
+        </form>
+      </div>
+
+      <div class="mobile-copyright">
+        © 2025 N'gaSo — Tous droits réservés
+      </div>
+    </div>
+  </div>
+</div>
+

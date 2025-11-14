@@ -7,6 +7,11 @@ import { StepsComponent } from './steps/steps.component';
 import { SettingsComponent } from './settings/settings.component';
 
 export const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  {
+    path: 'login',
+    loadComponent: () => import('./login/login.component').then((m) => m.LoginComponent)
+  },
   {
     path: '',
     component: ShellComponent,
@@ -18,5 +23,5 @@ export const routes: Routes = [
       { path: 'settings', component: SettingsComponent }
     ]
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'login' }
 ];
