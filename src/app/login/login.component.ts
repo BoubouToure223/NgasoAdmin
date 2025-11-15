@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +15,11 @@ export class LoginComponent {
   passwordVisible = false;
 
   private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
+  loading = false;
+  errorMessage: string | null = null;
 
   readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -30,10 +37,32 @@ export class LoginComponent {
       return;
     }
 
-    const { email, password, remember } = this.loginForm.getRawValue();
+    const { email, password } = this.loginForm.getRawValue();
 
-    // TODO: Remplacer par un appel à un service d'authentification réel
-    console.log('Tentative de connexion', { email, password, remember });
+    this.loading = true;
+    this.errorMessage = null;
+
+    this.authService.loginAdmin(email, password).subscribe({
+      next: (res) => {
+        localStorage.setItem('ngaso_token', res.token);
+        localStorage.setItem('ngaso_role', res.role);
+        localStorage.setItem('ngaso_user_id', String(res.id));
+
+        this.loading = false;
+        this.router.navigateByUrl('/dashboard');
+      },
+      error: (err) => {
+        this.loading = false;
+
+        if (err.status === 400 || err.status === 401) {
+          this.errorMessage = 'Identifiants invalides';
+        } else if (err.status === 403) {
+          this.errorMessage = 'Accès refusé';
+        } else {
+          this.errorMessage = 'Erreur serveur, veuillez réessayer plus tard';
+        }
+      }
+    });
   }
 }
 
