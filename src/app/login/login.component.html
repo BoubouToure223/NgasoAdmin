@@ -156,6 +156,10 @@
             <label for="remember" class="remember-label">Se souvenir de moi</label>
           </div>
 
+          <p class="error" *ngIf="errorMessage">
+            {{ errorMessage }}
+          </p>
+
           <button type="submit" class="login-button">Se connecter</button>
         </form>
       </div>
