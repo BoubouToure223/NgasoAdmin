@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ProjectsService, ProjetAdminItemResponse } from '../services/projects.service';
 
 interface Project {
   id: number;
@@ -20,63 +21,67 @@ interface Project {
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css']
 })
-export class ProjectsComponent {
+export class ProjectsComponent implements OnInit {
   searchText = '';
+  projects: Project[] = [];
+  filteredProjects: Project[] = [];
 
-  projects: Project[] = [
-    {
-      id: 1,
-      nom: 'Villa Émeraude',
-      proprietaire: 'Jean Kofi',
-      localisation: 'Abidjan, Cocody',
-      budget: '50M FCFA',
-      etape: 'Fondation',
-      progression: 25,
-      miseAJour: '10/05/2023'
-    },
-    {
-      id: 2,
-      nom: 'Résidence Azur',
-      proprietaire: 'Marie Touré',
-      localisation: 'Abidjan, Plateau',
-      budget: '120M FCFA',
-      etape: 'Gros œuvre',
-      progression: 60,
-      miseAJour: '18/05/2023'
-    },
-    {
-      id: 3,
-      nom: 'Complexe Harmonie',
-      proprietaire: 'Amadou Diallo',
-      localisation: 'Abidjan, Marcory',
-      budget: '200M FCFA',
-      etape: 'Finitions',
-      progression: 85,
-      miseAJour: '22/05/2023'
-    },
-    {
-      id: 4,
-      nom: 'Immeuble Soleil',
-      proprietaire: 'Fatou Cissé',
-      localisation: 'Abidjan, Yopougon',
-      budget: '80M FCFA',
-      etape: 'Études',
-      progression: 10,
-      miseAJour: '05/05/2023'
-    },
-    {
-      id: 5,
-      nom: "Centre Commercial Étoile",
-      proprietaire: "Konan N'Guessan",
-      localisation: 'Abidjan, Abobo',
-      budget: '350M FCFA',
-      etape: 'Livré',
-      progression: 100,
-      miseAJour: '01/05/2023'
-    }
-  ];
+  private readonly projectsService = inject(ProjectsService);
 
-  filteredProjects: Project[] = [...this.projects];
+  page = 0;
+  size = 10;
+  total = 0;
+  totalPages = 0;
+  loading = false;
+  errorMessage: string | null = null;
+
+  ngOnInit(): void {
+    this.loadPage(0);
+  }
+
+  private mapProjet(item: ProjetAdminItemResponse): Project {
+    const proprietaire = [item.proprietairePrenom, item.proprietaireNom]
+      .filter((v) => !!v)
+      .join(' ') || 'Inconnu';
+
+    const budget = `${item.budget} FCFA`;
+
+    const miseAJour = new Date(item.dateCreation).toLocaleDateString();
+
+    return {
+      id: item.id,
+      nom: item.titre,
+      proprietaire,
+      localisation: item.localisation,
+      budget,
+      etape: item.currentEtape ?? 'Non démarré',
+      progression: item.progressPercent,
+      miseAJour
+    };
+  }
+
+  private loadPage(page: number): void {
+    this.loading = true;
+    this.errorMessage = null;
+
+    this.projectsService.list(page, this.size).subscribe({
+      next: (res) => {
+        this.page = res.page;
+        this.size = res.size;
+        this.total = res.total;
+        this.totalPages = res.totalPages;
+
+        this.projects = res.items.map((item) => this.mapProjet(item));
+        this.filteredProjects = [...this.projects];
+
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.errorMessage = 'Erreur lors du chargement des projets';
+      }
+    });
+  }
 
   onSearch(): void {
     if (!this.searchText.trim()) {
@@ -107,6 +112,13 @@ export class ProjectsComponent {
 
   onDelete(project: Project): void {
     console.log('Delete project:', project);
+  }
+
+  goToPage(page: number): void {
+    if (page < 0 || (this.totalPages && page >= this.totalPages)) {
+      return;
+    }
+    this.loadPage(page);
   }
 
   getEtapeClass(etape: string): string {

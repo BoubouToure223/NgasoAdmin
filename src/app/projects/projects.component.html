@@ -97,12 +97,38 @@
 
   <!-- Pagination -->
   <div class="pagination">
-    <span class="pagination-info">Affichage de 1 à 5 sur 5 résultats</span>
+    <span class="pagination-info">
+      Affichage de
+      <span class="font-medium">{{ page * size + 1 }}</span>
+      à
+      <span class="font-medium">{{ page * size + filteredProjects.length }}</span>
+      sur
+      <span class="font-medium">{{ total }}</span>
+      résultats
+    </span>
     <div class="pagination-buttons">
-      <button class="pagination-btn">Précédent</button>
-      <button class="pagination-btn active">1</button>
-      <button class="pagination-btn">2</button>
-      <button class="pagination-btn">Suivant</button>
+      <button
+        class="pagination-btn"
+        [disabled]="page === 0"
+        (click)="goToPage(page - 1)"
+      >
+        Précédent
+      </button>
+      <button
+        class="pagination-btn"
+        [class.active]="page === i"
+        *ngFor="let i of [].constructor(totalPages); let idx = index"
+        (click)="goToPage(idx)"
+      >
+        {{ idx + 1 }}
+      </button>
+      <button
+        class="pagination-btn"
+        [disabled]="page + 1 >= totalPages"
+        (click)="goToPage(page + 1)"
+      >
+        Suivant
+      </button>
     </div>
   </div>
 </div>
