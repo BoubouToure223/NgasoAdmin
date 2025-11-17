@@ -1,0 +1,78 @@
+<div class="dashboard-container">
+  <main class="main-content">
+    <!-- Add Specialty Form -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Ajouter une nouvelle spécialité</h3>
+      </div>
+      <div class="card-content">
+        <form (ngSubmit)="addSpecialty()" class="specialty-form">
+          <input
+            type="text"
+            placeholder="Nom de la spécialité"
+            [(ngModel)]="newSpecialty"
+            name="specialty"
+            class="input"
+          />
+          <button type="submit" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Ajouter
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Specialties Table -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Spécialités</h3>
+      </div>
+      <div class="card-content">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Nb de professionnels</th>
+              <th class="text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let specialty of specialties">
+              <td class="font-medium">{{ specialty.name }}</td>
+              <td>{{ specialty.professionals }}</td>
+              <td class="text-right">
+                <button
+                  class="btn-icon btn-delete"
+                  (click)="requestDeleteSpecialty(specialty)"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="showDeleteConfirm && specialtyPendingDelete">
+              <td colspan="3" class="confirm-row">
+                <div class="confirm-content">
+                  <span>
+                    Supprimer la spécialité
+                    <strong>"{{ specialtyPendingDelete.name }}"</strong>
+                    ?
+                  </span>
+                  <div class="confirm-actions">
+                    <button type="button" class="btn btn-secondary" (click)="cancelDeleteSpecialty()">Annuler</button>
+                    <button type="button" class="btn btn-danger" (click)="confirmDeleteSpecialty()">Supprimer</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>

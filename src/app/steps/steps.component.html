@@ -29,22 +29,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Obtention du permis de construire</td>
-            <td>Administration</td>
-            <td>Démarche administrative nécessaire avant de construire</td>
-            <td class="illu"><span class="pill pill-blue">1 illustration</span></td>
+          <tr *ngFor="let step of steps">
+            <td>{{ step.order }}</td>
+            <td>{{ step.name }}</td>
+            <td>{{ step.specialties || '—' }}</td>
+            <td>{{ step.description }}</td>
+            <td class="illu">
+              <span class="pill pill-blue">
+                {{ step.illustrationsCount }}
+                {{ step.illustrationsCount === 1 ? 'illustration' : 'illustrations' }}
+              </span>
+            </td>
             <td>
               <div class="action-icons">
-                <button class="icon-btn btn-edit" aria-label="Illustrations" (click)="openIllustrations('Obtention du permis de construire')">
+                <button class="icon-btn btn-edit" aria-label="Illustrations" (click)="openIllustrations(step)">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/>
                     <path d="M3 15l4-4 5 5 3-3 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="9" cy="9" r="1.5" fill="currentColor"/>
                   </svg>
                 </button>
-                <button class="icon-btn btn-delete" aria-label="Supprimer">
+                <button class="icon-btn btn-delete" aria-label="Supprimer" (click)="requestDeleteStep(step)">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                     <path d="M2 4h12M6 4V2.667A.667.667 0 0 1 6.667 2h2.666A.667.667 0 0 1 10 2.667V4m2 0v9.333a.667.667 0 0 1-.667.667H4.667A.667.667 0 0 1 4 13.333V4h8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -52,118 +57,18 @@
               </div>
             </td>
           </tr>
-          <tr>
-            <td>2</td>
-            <td>Préparation du terrain</td>
-            <td>Terrassement</td>
-            <td>Nettoyage et nivellement du terrain avant travaux</td>
-            <td class="illu"><span class="pill pill-blue">1 illustration</span></td>
-            <td>
-              <div class="action-icons">
-                <button class="icon-btn btn-edit" aria-label="Illustrations" (click)="openIllustrations('Préparation du terrain')">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/>
-                    <path d="M3 15l4-4 5 5 3-3 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="9" cy="9" r="1.5" fill="currentColor"/>
-                  </svg>
-                </button>
-                <button class="icon-btn btn-delete" aria-label="Supprimer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M2 4h12M6 4V2.667A.667.667 0 0 1 6.667 2h2.666A.667.667 0 0 1 10 2.667V4m2 0v9.333a.667.667 0 0 1-.667.667H4.667A.667.667 0 0 1 4 13.333V4h8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Fondations</td>
-            <td>Maçonnerie</td>
-            <td>Mise en place des fondations du bâtiment</td>
-            <td class="illu"><span class="pill pill-blue">1 illustration</span></td>
-            <td>
-              <div class="action-icons">
-                <button class="icon-btn btn-edit" aria-label="Illustrations" (click)="openIllustrations('Fondations')">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/>
-                    <path d="M3 15l4-4 5 5 3-3 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="9" cy="9" r="1.5" fill="currentColor"/>
-                  </svg>
-                </button>
-                <button class="icon-btn btn-delete" aria-label="Supprimer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M2 4h12M6 4V2.667A.667.667 0 0 1 6.667 2h2.666A.667.667 0 0 1 10 2.667V4m2 0v9.333a.667.667 0 0 1-.667.667H4.667A.667.667 0 0 1 4 13.333V4h8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Charpente et couverture</td>
-            <td>Gros œuvre</td>
-            <td>Installation de la structure du toit</td>
-            <td class="illu"><span class="pill pill-blue">1 illustration</span></td>
-            <td>
-              <div class="action-icons">
-                <button class="icon-btn btn-edit" aria-label="Illustrations" (click)="openIllustrations('Charpente et couverture')">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/>
-                    <path d="M3 15l4-4 5 5 3-3 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="9" cy="9" r="1.5" fill="currentColor"/>
-                  </svg>
-                </button>
-                <button class="icon-btn btn-delete" aria-label="Supprimer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M2 4h12M6 4V2.667A.667.667 0 0 1 6.667 2h2.666A.667.667 0 0 1 10 2.667V4m2 0v9.333a.667.667 0 0 1-.667.667H4.667A.667.667 0 0 1 4 13.333V4h8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>Plomberie</td>
-            <td>Second œuvre</td>
-            <td>Installation des réseaux d'eau</td>
-            <td class="illu"><span class="pill pill-blue">1 illustration</span></td>
-            <td>
-              <div class="action-icons">
-                <button class="icon-btn btn-edit" aria-label="Modifier">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/>
-                    <path d="M7 13l3-3 4 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="9" cy="8" r="1.2" fill="currentColor"/>
-                  </svg>
-                </button>
-                <button class="icon-btn btn-delete" aria-label="Supprimer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M2 4h12M6 4V2.667A.667.667 0 0 1 6.667 2h2.666A.667.667 0 0 1 10 2.667V4m2 0v9.333a.667.667 0 0 1-.667.667H4.667A.667.667 0 0 1 4 13.333V4h8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td>Électricité</td>
-            <td>Second œuvre</td>
-            <td>Installation des circuits électriques</td>
-            <td class="illu"><span class="pill pill-blue">1 illustration</span></td>
-            <td>
-              <div class="action-icons">
-                <button class="icon-btn btn-edit" aria-label="Modifier">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/>
-                    <path d="M7 13l3-3 4 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="9" cy="8" r="1.2" fill="currentColor"/>
-                  </svg>
-                </button>
-                <button class="icon-btn btn-delete" aria-label="Supprimer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M2 4h12M6 4V2.667A.667.667 0 0 1 6.667 2h2.666A.667.667 0 0 1 10 2.667V4m2 0v9.333a.667.667 0 0 1-.667.667H4.667A.667.667 0 0 1 4 13.333V4h8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
+          <tr *ngIf="showDeleteStepConfirm && stepPendingDelete">
+            <td colspan="6" class="confirm-row">
+              <div class="confirm-content">
+                <span>
+                  Supprimer le modèle d'étape
+                  <strong>"{{ stepPendingDelete.name }}"</strong>
+                  ?
+                </span>
+                <div class="confirm-actions">
+                  <button type="button" class="btn btn-secondary" (click)="cancelDeleteStep()">Annuler</button>
+                  <button type="button" class="btn btn-danger" (click)="confirmDeleteStep()">Supprimer</button>
+                </div>
               </div>
             </td>
           </tr>
@@ -189,42 +94,85 @@
           <div class="row">
             <div class="form-group">
               <div class="label"><span>Nom de l'étape</span><span class="required">*</span></div>
-              <input class="input" name="name" type="text" value="Obtention du permis de construire" />
+              <input
+                class="input"
+                name="name"
+                type="text"
+                [value]="createForm.nom"
+                (input)="onCreateFieldChange('nom', $any($event.target).value)"
+              />
             </div>
             <div class="form-group">
               <div class="label"><span>Ordre</span><span class="required">*</span></div>
-              <input class="input" name="order" type="number" value="0" />
+              <input
+                class="input"
+                name="order"
+                type="number"
+                [value]="createForm.ordre"
+                (input)="onCreateFieldChange('ordre', $any($event.target).value)"
+              />
             </div>
           </div>
 
           <div class="form-group">
             <div class="label"><span>Spécialité</span><span class="required">*</span></div>
-            <div class="select-wrapper">
-              <select class="select" name="specialty">
-                <option value="">Sélectionner une spécialité</option>
-                <option>Administration</option>
-                <option>Terrassement</option>
-                <option>Maçonnerie</option>
-                <option>Gros œuvre</option>
-                <option>Second œuvre</option>
-              </select>
-              <div class="select-arrow">
-                <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
-                  <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+            <div class="multi-select">
+              <button
+                type="button"
+                class="multi-select-trigger select"
+                (click)="specialtyDropdownOpen = !specialtyDropdownOpen"
+              >
+                <span *ngIf="createForm.specialiteIds.length === 0">
+                  Sélectionner des spécialités
+                </span>
+                <span *ngIf="createForm.specialiteIds.length === 1">
+                  1 spécialité sélectionnée
+                </span>
+                <span *ngIf="createForm.specialiteIds.length > 1">
+                  {{ createForm.specialiteIds.length }} spécialités sélectionnées
+                </span>
+                <span class="select-arrow">
+                  <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+
+              <div class="multi-select-panel" *ngIf="specialtyDropdownOpen">
+                <div class="checkbox-list">
+                  <label class="checkbox-item" *ngFor="let spec of specialties">
+                    <input
+                      type="checkbox"
+                      [checked]="isSpecialiteSelected(spec.id)"
+                      (change)="onToggleSpecialite(spec.id, $any($event.target).checked)"
+                    />
+                    <span>{{ spec.libelle }}</span>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="form-group">
             <div class="label"><span>Description</span></div>
-            <textarea class="textarea" name="description">Démarche administrative nécessaire avant de commencer les travaux</textarea>
+            <textarea
+              class="textarea"
+              name="description"
+              [value]="createForm.description"
+              (input)="onCreateFieldChange('description', $any($event.target).value)"
+            ></textarea>
           </div>
         </div>
 
         <div class="form-actions">
           <button type="button" class="btn btn-cancel" (click)="closeCreate()">Annuler</button>
-          <button type="submit" class="btn btn-submit">Enregistrer</button>
+          <button
+            type="submit"
+            class="btn btn-submit"
+            [disabled]="createForm.submitting || !createForm.nom?.trim() || !createForm.specialiteIds.length"
+          >
+            {{ createForm.submitting ? 'Enregistrement...' : 'Enregistrer' }}
+          </button>
         </div>
       </form>
     </div>
@@ -249,17 +197,28 @@
       <!-- Content -->
       <div class="illus-modal-content">
         <div class="section-group">
-          <h3 class="section-title">Illustrations existantes (1)</h3>
-          <div class="illustrations-grid">
-            <div class="illustration-card">
-              <img class="illustration-image" alt="Aperçu de l'étape"
-                   src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop" />
+          <h3 class="section-title">
+            Illustrations existantes
+            <span *ngIf="illustrations.length">({{ illustrations.length }})</span>
+          </h3>
+
+          <div *ngIf="illustrationsLoading" class="empty-state">
+            <p class="empty-text">Chargement des illustrations...</p>
+          </div>
+
+          <div *ngIf="!illustrationsLoading && !illustrations.length" class="empty-state">
+            <p class="empty-text">Aucune illustration pour ce modèle d'étape.</p>
+          </div>
+
+          <div *ngIf="!illustrationsLoading && illustrations.length" class="illustrations-grid">
+            <div class="illustration-card" *ngFor="let ill of illustrations">
+              <img class="illustration-image" [alt]="ill.titre" [src]="imageBaseUrl + ill.urlImage" />
               <div class="illustration-content">
-                <h4 class="illustration-title">Aperçu de l'étape</h4>
+                <h4 class="illustration-title">{{ ill.titre }}</h4>
                 <p class="illustration-description">
-                  Cette étape cruciale consiste à obtenir le permis de construire, une autorisation administrative indispensable pour démarrer votre projet de construction en toute légalité. Elle garantit que votre projet respecte les règles d'urbanisme en vigueur et prévient d'éventuels problèmes juridiques.
+                  {{ ill.description }}
                 </p>
-                <button class="delete-button" type="button">
+                <button class="delete-button" type="button" (click)="requestDeleteIllustration(ill)">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M2 4H14M5 4V3C5 2.44772 5.44772 2 6 2H10C10.5523 2 11 2.44772 11 3V4M13 4V13C13 13.5523 12.5523 14 12 14H4C3.44772 14 3 13.5523 3 13V4H13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -285,15 +244,25 @@
           <h3 class="form-title">Nouvelle illustration</h3>
           <div class="form-group">
             <label class="form-label">Titre <span class="required">*</span></label>
-            <input class="form-input" type="text" placeholder="Aperçu de l'étape" />
+            <input
+              class="form-input"
+              type="text"
+              placeholder="Aperçu de l'étape"
+              [value]="illustrationForm.titre"
+              (input)="onIllustrationFieldChange('titre', $any($event.target).value)"
+            />
           </div>
           <div class="form-group">
             <label class="form-label">Description</label>
-            <textarea class="form-textarea">Cette étape cruciale consiste à obtenir le permis de construire, une autorisation administrative indispensable pour démarrer votre projet de construction en toute légalité. Elle garantit que votre projet respecte les règles d'urbanisme en vigueur et prévient d'éventuels problèmes juridiques.</textarea>
+            <textarea
+              class="form-textarea"
+              [value]="illustrationForm.description"
+              (input)="onIllustrationFieldChange('description', $any($event.target).value)"
+            ></textarea>
           </div>
           <div class="form-group">
             <label class="form-label">Image <span class="required">*</span></label>
-            <label class="upload-area" (click)="onUploadAreaClick()">
+            <label class="upload-area">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="margin-right: 0.5rem;">
                 <path d="M11 3H7C5.89543 3 5 3.89543 5 5V15C5 16.1046 5.89543 17 7 17H13C14.1046 17 15 16.1046 15 15V9M11 3L15 7M11 3V7C11 7.55228 11.4477 8 12 8H15M9 11H11M9 14H11M9 8H10" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -303,14 +272,31 @@
           </div>
           <div class="form-actions">
             <button class="secondary-button" type="button" (click)="toggleAddIllustration(false)">Annuler</button>
-            <button class="primary-button" type="button">Ajouter l'illustration</button>
+            <button
+              class="primary-button"
+              type="button"
+              (click)="submitIllustration()"
+              [disabled]="illustrationForm.submitting || !illustrationForm.titre?.trim() || !illustrationForm.file"
+            >
+              {{ illustrationForm.submitting ? "Ajout en cours..." : "Ajouter l'illustration" }}
+            </button>
           </div>
         </div>
 
-        <!-- Footer actions -->
-        <div class="footer-actions">
+        <!-- Delete confirmation -->
+        <div class="footer-actions" *ngIf="showDeleteIllustrationConfirm">
+          <span style="margin-right:auto; color:#4b5563; font-size:14px;">
+            Confirmer la suppression de l'illustration
+            <strong *ngIf="illustrationPendingDelete">{{ illustrationPendingDelete.titre || 'sans titre' }}</strong>
+            ?
+          </span>
+          <button class="footer-secondary-button" type="button" (click)="cancelDeleteIllustration()">Annuler</button>
+          <button class="footer-primary-button" type="button" (click)="confirmDeleteIllustration()">Supprimer</button>
+        </div>
+
+        <!-- Footer actions (default) -->
+        <div class="footer-actions" *ngIf="!showDeleteIllustrationConfirm">
           <button class="footer-secondary-button" type="button" (click)="closeIllustrations()">Fermer</button>
-          <button class="footer-primary-button" type="button">Enregistrer les modifications</button>
         </div>
       </div>
     </div>
