@@ -14,10 +14,22 @@
     <!-- Tabs -->
     <div class="tabs-container">
       <div class="tabs">
-        <button class="tab-button active" aria-current="page">
+        <button
+          class="tab-button"
+          [ngClass]="{ active: activeTab === 'particuliers' }"
+          type="button"
+          (click)="selectTab('particuliers')"
+          [attr.aria-current]="activeTab === 'particuliers' ? 'page' : null"
+        >
           <div class="tab-text">Particuliers</div>
         </button>
-        <button class="tab-button">
+        <button
+          class="tab-button"
+          [ngClass]="{ active: activeTab === 'professionnels' }"
+          type="button"
+          (click)="selectTab('professionnels')"
+          [attr.aria-current]="activeTab === 'professionnels' ? 'page' : null"
+        >
           <div class="tab-text">Professionnels</div>
         </button>
       </div>
@@ -57,14 +69,16 @@
       </div>
     </div>
 
-    <!-- Table -->
-    <div class="table-wrapper">
+    <!-- Table: Particuliers -->
+    <div class="table-wrapper" *ngIf="activeTab === 'particuliers'">
       <div class="table-container">
         <table class="users-table tbl" role="table">
           <thead>
             <tr class="table-header">
-              <th class="th-nom" scope="col">Nom</th>
+              <th class="th-nom" scope="col">Nom complet</th>
               <th class="th-email" scope="col">Email</th>
+              <th class="th-telephone" scope="col">Téléphone</th>
+              <th class="th-adresse" scope="col">Adresse</th>
               <th class="th-projets" scope="col">Projets</th>
               <th class="th-inscription" scope="col">Inscription</th>
               <th class="th-statut" scope="col">Statut</th>
@@ -72,118 +86,95 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="table-row">
-              <td class="td-nom">Sékou keita</td>
-              <td class="td-email">@example.com</td>
-              <td class="td-projets">2</td>
-              <td class="td-inscription">12/05/2023</td>
+            <tr class="table-row" *ngFor="let user of novices">
+              <td class="td-nom">{{ user.prenom }} {{ user.nom }}</td>
+              <td class="td-email">{{ user.email }}</td>
+              <td class="td-telephone">{{ user.telephone }}</td>
+              <td class="td-adresse">{{ user.adresse }}</td>
+              <td class="td-projets">{{ user.nombreProjetsNovice }}</td>
+              <td class="td-inscription">{{ user.dateInscription | date: 'dd/MM/yyyy' }}</td>
               <td class="td-statut">
-                <span class="badge badge-actif">Actif</span>
+                <span class="badge" [ngClass]="user.actif ? 'badge-actif' : 'badge-inactif'">
+                  {{ user.actif ? 'Actif' : 'Inactif' }}
+                </span>
               </td>
               <td class="td-actions">
-                <button class="icon-button" aria-label="Modifier">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.333 2.00004C11.5081 1.82494 11.7169 1.68605 11.9472 1.59129C12.1776 1.49653 12.4249 1.44775 12.6747 1.44775C12.9245 1.44775 13.1718 1.49653 13.4022 1.59129C13.6325 1.68605 13.8413 1.82494 14.0163 2.00004C14.1914 2.17513 14.3303 2.38394 14.4251 2.61432C14.5198 2.8447 14.5686 3.09198 14.5686 3.34171C14.5686 3.59143 14.5198 3.83871 14.4251 4.06909C14.3303 4.29947 14.1914 4.50828 14.0163 4.68337L5.00001 13.7L1.33334 14.6667L2.30001 11L11.333 2.00004Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-                <button class="icon-button" aria-label="Supprimer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 4H3.33333H14" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M5.33334 4.00004V2.66671C5.33334 2.31309 5.47381 1.97395 5.72386 1.7239C5.97391 1.47385 6.31305 1.33337 6.66668 1.33337H9.33334C9.68697 1.33337 10.0261 1.47385 10.2762 1.7239C10.5262 1.97395 10.6667 2.31309 10.6667 2.66671V4.00004M12.6667 4.00004V13.3334C12.6667 13.687 12.5262 14.0261 12.2762 14.2762C12.0261 14.5262 11.687 14.6667 11.3333 14.6667H4.66668C4.31305 14.6667 3.97391 14.5262 3.72386 14.2762C3.47381 14.0261 3.33334 13.687 3.33334 13.3334V4.00004H12.6667Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </td>
-            </tr>
-            <tr class="table-row">
-              <td class="td-nom">Boubou Touré</td>
-              <td class="td-email">@example.com</td>
-              <td class="td-projets">1</td>
-              <td class="td-inscription">24/06/2023</td>
-              <td class="td-statut">
-                <span class="badge badge-actif">Actif</span>
-              </td>
-              <td class="td-actions">
-                <button class="icon-button" aria-label="Modifier">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.333 2.00004C11.5081 1.82494 11.7169 1.68605 11.9472 1.59129C12.1776 1.49653 12.4249 1.44775 12.6747 1.44775C12.9245 1.44775 13.1718 1.49653 13.4022 1.59129C13.6325 1.68605 13.8413 1.82494 14.0163 2.00004C14.1914 2.17513 14.3303 2.38394 14.4251 2.61432C14.5198 2.8447 14.5686 3.09198 14.5686 3.34171C14.5686 3.59143 14.5198 3.83871 14.4251 4.06909C14.3303 4.29947 14.1914 4.50828 14.0163 4.68337L5.00001 13.7L1.33334 14.6667L2.30001 11L11.333 2.00004Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-                <button class="icon-button" aria-label="Supprimer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 4H3.33333H14" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M5.33334 4.00004V2.66671C5.33334 2.31309 5.47381 1.97395 5.72386 1.7239C5.97391 1.47385 6.31305 1.33337 6.66668 1.33337H9.33334C9.68697 1.33337 10.0261 1.47385 10.2762 1.7239C10.5262 1.97395 10.6667 2.31309 10.6667 2.66671V4.00004M12.6667 4.00004V13.3334C12.6667 13.687 12.5262 14.0261 12.2762 14.2762C12.0261 14.5262 11.687 14.6667 11.3333 14.6667H4.66668C4.31305 14.6667 3.97391 14.5262 3.72386 14.2762C3.47381 14.0261 3.33334 13.687 3.33334 13.3334V4.00004H12.6667Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </td>
-            </tr>
-            <tr class="table-row">
-              <td class="td-nom">oumar cissé</td>
-              <td class="td-email">@example.com</td>
-              <td class="td-projets">0</td>
-              <td class="td-inscription">15/07/2023</td>
-              <td class="td-statut">
-                <span class="badge badge-inactif">Inactif</span>
-              </td>
-              <td class="td-actions">
-                <button class="icon-button" aria-label="Modifier">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.333 2.00004C11.5081 1.82494 11.7169 1.68605 11.9472 1.59129C12.1776 1.49653 12.4249 1.44775 12.6747 1.44775C12.9245 1.44775 13.1718 1.49653 13.4022 1.59129C13.6325 1.68605 13.8413 1.82494 14.0163 2.00004C14.1914 2.17513 14.3303 2.38394 14.4251 2.61432C14.5198 2.8447 14.5686 3.09198 14.5686 3.34171C14.5686 3.59143 14.5198 3.83871 14.4251 4.06909C14.3303 4.29947 14.1914 4.50828 14.0163 4.68337L5.00001 13.7L1.33334 14.6667L2.30001 11L11.333 2.00004Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-                <button class="icon-button" aria-label="Supprimer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 4H3.33333H14" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M5.33334 4.00004V2.66671C5.33334 2.31309 5.47381 1.97395 5.72386 1.7239C5.97391 1.47385 6.31305 1.33337 6.66668 1.33337H9.33334C9.68697 1.33337 10.0261 1.47385 10.2762 1.7239C10.5262 1.97395 10.6667 2.31309 10.6667 2.66671V4.00004M12.6667 4.00004V13.3334C12.6667 13.687 12.5262 14.0261 12.2762 14.2762C12.0261 14.5262 11.687 14.6667 11.3333 14.6667H4.66668C4.31305 14.6667 3.97391 14.5262 3.72386 14.2762C3.47381 14.0261 3.33334 13.687 3.33334 13.3334V4.00004H12.6667Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </td>
-            </tr>
-            <tr class="table-row">
-              <td class="td-nom">Amadou</td>
-              <td class="td-email">@example.com</td>
-              <td class="td-projets">1</td>
-              <td class="td-inscription">03/08/2023</td>
-              <td class="td-statut">
-                <span class="badge badge-actif">Actif</span>
-              </td>
-              <td class="td-actions">
-                <button class="icon-button" aria-label="Modifier">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.333 2.00004C11.5081 1.82494 11.7169 1.68605 11.9472 1.59129C12.1776 1.49653 12.4249 1.44775 12.6747 1.44775C12.9245 1.44775 13.1718 1.49653 13.4022 1.59129C13.6325 1.68605 13.8413 1.82494 14.0163 2.00004C14.1914 2.17513 14.3303 2.38394 14.4251 2.61432C14.5198 2.8447 14.5686 3.09198 14.5686 3.34171C14.5686 3.59143 14.5198 3.83871 14.4251 4.06909C14.3303 4.29947 14.1914 4.50828 14.0163 4.68337L5.00001 13.7L1.33334 14.6667L2.30001 11L11.333 2.00004Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-                <button class="icon-button" aria-label="Supprimer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 4H3.33333H14" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M5.33334 4.00004V2.66671C5.33334 2.31309 5.47381 1.97395 5.72386 1.7239C5.97391 1.47385 6.31305 1.33337 6.66668 1.33337H9.33334C9.68697 1.33337 10.0261 1.47385 10.2762 1.7239C10.5262 1.97395 10.6667 2.31309 10.6667 2.66671V4.00004M12.6667 4.00004V13.3334C12.6667 13.687 12.5262 14.0261 12.2762 14.2762C12.0261 14.5262 11.687 14.6667 11.3333 14.6667H4.66668C4.31305 14.6667 3.97391 14.5262 3.72386 14.2762C3.47381 14.0261 3.33334 13.687 3.33334 13.3334V4.00004H12.6667Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </td>
-            </tr>
-            <tr class="table-row">
-              <td class="td-nom">Issa</td>
-              <td class="td-email">@example.com</td>
-              <td class="td-projets">3</td>
-              <td class="td-inscription">22/04/2023</td>
-              <td class="td-statut">
-                <span class="badge badge-actif">Actif</span>
-              </td>
-              <td class="td-actions">
-                <button class="icon-button" aria-label="Modifier">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.333 2.00004C11.5081 1.82494 11.7169 1.68605 11.9472 1.59129C12.1776 1.49653 12.4249 1.44775 12.6747 1.44775C12.9245 1.44775 13.1718 1.49653 13.4022 1.59129C13.6325 1.68605 13.8413 1.82494 14.0163 2.00004C14.1914 2.17513 14.3303 2.38394 14.4251 2.61432C14.5198 2.8447 14.5686 3.09198 14.5686 3.34171C14.5686 3.59143 14.5198 3.83871 14.4251 4.06909C14.3303 4.29947 14.1914 4.50828 14.0163 4.68337L5.00001 13.7L1.33334 14.6667L2.30001 11L11.333 2.00004Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-                <button class="icon-button" aria-label="Supprimer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 4H3.33333H14" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M5.33334 4.00004V2.66671C5.33334 2.31309 5.47381 1.97395 5.72386 1.7239C5.97391 1.47385 6.31305 1.33337 6.66668 1.33337H9.33334C9.68697 1.33337 10.0261 1.47385 10.2762 1.7239C10.5262 1.97395 10.6667 2.31309 10.6667 2.66671V4.00004M12.6667 4.00004V13.3334C12.6667 13.687 12.5262 14.0261 12.2762 14.2762C12.0261 14.5262 11.687 14.6667 11.3333 14.6667H4.66668C4.31305 14.6667 3.97391 14.5262 3.72386 14.2762C3.47381 14.0261 3.33334 13.687 3.33334 13.3334V4.00004H12.6667Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+                <button
+                  class="action-button"
+                  [ngClass]="user.actif ? 'danger' : 'success'"
+                  type="button"
+                  (click)="toggleUserActive(user)"
+                  [attr.aria-label]="user.actif ? 'Désactiver l\'utilisateur' : 'Activer l\'utilisateur'"
+                >
+                  <div class="button-text">{{ user.actif ? 'Désactiver' : 'Activer' }}</div>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Table: Professionnels (pour l'instant même contenu, à connecter à l'API plus tard) -->
+    <div class="table-wrapper" *ngIf="activeTab === 'professionnels'">
+      <div class="table-container">
+        <table class="users-table tbl" role="table">
+          <thead>
+            <tr class="table-header">
+              <th class="th-nom" scope="col">Nom complet</th>
+              <th class="th-email" scope="col">Email</th>
+              <th class="th-telephone" scope="col">Téléphone</th>
+              <th class="th-adresse" scope="col">Adresse</th>
+              <th class="th-inscription" scope="col">Inscription</th>
+              <th class="th-statut" scope="col">Statut</th>
+              <th class="th-actions" scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-row" *ngFor="let user of professionnels">
+              <td class="td-nom">{{ user.prenom }} {{ user.nom }}</td>
+              <td class="td-email">{{ user.email }}</td>
+              <td class="td-telephone">{{ user.telephone }}</td>
+              <td class="td-adresse">{{ user.adresse }}</td>
+              <td class="td-inscription">{{ user.dateInscription | date: 'dd/MM/yyyy' }}</td>
+              <td class="td-statut">
+                <span class="badge" [ngClass]="user.actif ? 'badge-actif' : 'badge-inactif'">
+                  {{ user.actif ? 'Actif' : 'Inactif' }}
+                </span>
+              </td>
+              <td class="td-actions">
+                <button
+                  class="action-button"
+                  [ngClass]="user.actif ? 'danger' : 'success'"
+                  type="button"
+                  (click)="toggleUserActive(user)"
+                  [attr.aria-label]="user.actif ? 'Désactiver l\'utilisateur' : 'Activer l\'utilisateur'"
+                >
+                  <div class="button-text">{{ user.actif ? 'Désactiver' : 'Activer' }}</div>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Confirmation de désactivation -->
+    <div *ngIf="showDeactivateConfirm && userPendingDeactivate" class="confirm-row">
+      <div class="confirm-content">
+        <span>
+          Désactiver l'utilisateur
+          <strong>{{ userPendingDeactivate.prenom }} {{ userPendingDeactivate.nom }}</strong>
+          ?
+        </span>
+        <div class="confirm-actions">
+          <button type="button" class="action-button" (click)="cancelDeactivateUser()">
+            <div class="button-text">Annuler</div>
+          </button>
+          <button type="button" class="action-button danger" (click)="confirmDeactivateUser()">
+            <div class="button-text">Désactiver</div>
+          </button>
+        </div>
       </div>
     </div>
 
