@@ -30,7 +30,7 @@
                 <td>
                   <button
                     class="btn-link"
-                    (click)="viewDocument(registration.id)"
+                    (click)="viewDocument(registration.documentFilename)"
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -70,45 +70,6 @@
           </table>
         </div>
 
-        <!-- Pagination -->
-        <div class="pagination">
-          <div class="pagination-controls">
-            <button
-              class="btn btn-outline"
-              [disabled]="currentPage === 1"
-              (click)="goToPage(currentPage - 1)"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-              Précédent
-            </button>
-            <button
-              class="btn"
-              [ngClass]="{'btn-active': currentPage === 1}"
-              (click)="goToPage(1)"
-            >
-              1
-            </button>
-            <button
-              class="btn btn-outline"
-              [ngClass]="{'btn-active': currentPage === 2}"
-              (click)="goToPage(2)"
-            >
-              2
-            </button>
-            <button
-              class="btn btn-outline"
-              [disabled]="currentPage === totalPages"
-              (click)="goToPage(currentPage + 1)"
-            >
-              Suivant
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   </main>

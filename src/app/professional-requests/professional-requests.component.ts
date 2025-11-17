@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ProfessionalRequestsService, ProfessionnelSummaryResponse } from '../services/professional-requests.service';
 
 interface Registration {
   id: number;
@@ -8,6 +9,7 @@ interface Registration {
   date: string;
   telephone: string;
   email: string;
+  documentFilename: string | null;
   status: string;
 }
 
@@ -18,66 +20,102 @@ interface Registration {
   templateUrl: './professional-requests.component.html',
   styleUrls: ['./professional-requests.component.css']
 })
-export class ProfessionalRequestsComponent {
-  registrations: Registration[] = [
-    {
-      id: 1,
-      name: 'Jean Dupont',
-      specialty: 'Plomberie',
-      date: '12/05/2023',
-      telephone: '+33 6 12 34 56 78',
-      email: 'jean.dupont@example.com',
-      status: 'En attente'
-    },
-    {
-      id: 2,
-      name: 'Marie Laurent',
-      specialty: 'Électricité',
-      date: '14/05/2023',
-      telephone: '+33 6 23 45 67 89',
-      email: 'marie.laurent@example.com',
-      status: 'En attente'
-    },
-    {
-      id: 3,
-      name: 'Thomas Mercier',
-      specialty: 'Maçonnerie',
-      date: '15/05/2023',
-      telephone: '+33 6 34 56 78 90',
-      email: 'thomas.mercier@example.com',
-      status: 'En attente'
-    },
-    {
-      id: 4,
-      name: 'Sophie Leroy',
-      specialty: 'Plomberie',
-      date: '16/05/2023',
-      telephone: '+33 6 45 67 89 01',
-      email: 'sophie.leroy@example.com',
-      status: 'En attente'
+export class ProfessionalRequestsComponent implements OnInit {
+  registrations: Registration[] = [];
+
+  private readonly service = inject(ProfessionalRequestsService);
+
+  loading = false;
+  errorMessage: string | null = null;
+
+  ngOnInit(): void {
+    this.loadRegistrations();
+  }
+
+  private mapToRegistration(p: ProfessionnelSummaryResponse): Registration {
+    const name = [p.prenom, p.nom].filter((v) => !!v).join(' ');
+    const specialty = p.specialiteLibelle ?? 'Non renseignée';
+    const date = p.dateInscription ? new Date(p.dateInscription).toLocaleDateString() : '—';
+
+    let documentFilename: string | null = null;
+    if (p.documentJustificatif) {
+      const parts = p.documentJustificatif.split(/[/\\]/);
+      documentFilename = parts[parts.length - 1] || null;
     }
-  ];
 
-  currentPage = 1;
-  totalPages = 2;
+    return {
+      id: p.id,
+      name,
+      specialty,
+      date,
+      telephone: p.telephone,
+      email: p.email,
+      documentFilename,
+      status: p.estValider ? 'Validé' : 'En attente'
+    };
+  }
 
-  viewDocument(id: number): void {
-    console.log('Viewing document for registration:', id);
+  private loadRegistrations(): void {
+    this.loading = true;
+    this.errorMessage = null;
+
+    this.service.listPending().subscribe({
+      next: (items) => {
+        this.registrations = items.map((p) => this.mapToRegistration(p));
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.errorMessage = 'Erreur lors du chargement des demandes de professionnels';
+      }
+    });
+  }
+
+  viewDocument(filename: string | null): void {
+    if (!filename) {
+      return;
+    }
+
+    const url = `http://localhost:8080/api/v1/files/justificatifs/${encodeURIComponent(filename)}`;
+    window.open(url, '_blank');
   }
 
   validateRegistration(id: number, name: string): void {
-    console.log('Validating registration:', id, name);
-    // Implémenter la logique de validation
+    this.loading = true;
+    this.errorMessage = null;
+
+    this.service.validate(id).subscribe({
+      next: (updated) => {
+        this.registrations = this.registrations.map((r) =>
+          r.id === updated.id
+            ? {
+                ...r,
+                status: updated.estValider ? 'Validé' : r.status
+              }
+            : r
+        );
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.errorMessage = `Erreur lors de la validation de ${name}`;
+      }
+    });
   }
 
   rejectRegistration(id: number, name: string): void {
-    console.log('Rejecting registration:', id, name);
-    // Implémenter la logique de rejet
-  }
+    this.loading = true;
+    this.errorMessage = null;
 
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
+    this.service.reject(id).subscribe({
+      next: (removed) => {
+        this.registrations = this.registrations.filter((r) => r.id !== removed.id);
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.errorMessage = `Erreur lors du rejet de ${name}`;
+      }
+    });
   }
 }
