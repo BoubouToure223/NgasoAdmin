@@ -51,6 +51,19 @@
 .td-projets { text-align: left; }
 .td-inscription { color: #666666; }
 
+/* Widen some columns for readability */
+.th-telephone, .td-telephone {
+  min-width: 140px;
+}
+
+.th-adresse, .td-adresse {
+  min-width: 180px;
+}
+
+.th-nom, .td-nom {
+  min-width: 180px;
+}
+
 /* Status Badges */
 .td-statut { text-align: left; }
 .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; }
@@ -62,6 +75,45 @@
 .icon-button { background: none; border: none; padding: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background-color 0.2s; }
 .icon-button:hover { background-color: #f0f0f0; }
 .icon-button svg { width: 16px; height: 16px; }
+
+/* Confirmation row for deactivation */
+.confirm-row {
+  padding: 12px 16px;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fef2f2;
+}
+
+.confirm-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-button.danger {
+  background: #ef4444;
+  border-color: #ef4444;
+}
+
+.action-button.danger .button-text {
+  color: #ffffff;
+}
+
+/* Activer button (success) */
+.action-button.success {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.action-button.success .button-text {
+  color: #ffffff;
+}
 
 /* Footer Pagination */
 .footer-pagination { padding: 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ebebeb; }
