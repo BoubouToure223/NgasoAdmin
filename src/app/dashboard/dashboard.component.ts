@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DashboardService, DashboardStatsResponse } from '../services/dashboard.service';
 
 interface Specialty {
   name: string;
@@ -22,46 +23,48 @@ interface Registration {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  private readonly dashboardService = inject(DashboardService);
+
   searchQuery = '';
   newSpecialty = '';
 
   stats = [
     {
       title: 'Utilisateurs totaux',
-      value: '1,245',
-      change: '+12%',
+      value: '0',
+      change: '0%',
       changeLabel: 'vs mois précédent',
       iconClass: 'users',
       iconColor: 'blue',
-      changeType: 'positive'
+      changeType: 'neutral'
     },
     {
       title: 'Projets actifs',
-      value: '328',
-      change: '+5%',
+      value: '0',
+      change: '0%',
       changeLabel: 'vs mois précédent',
       iconClass: 'folder',
       iconColor: 'yellow',
-      changeType: 'positive'
+      changeType: 'neutral'
     },
     {
       title: 'Projets ce mois',
-      value: '87',
-      change: '+18%',
+      value: '0',
+      change: '0%',
       changeLabel: 'vs mois précédent',
       iconClass: 'file',
       iconColor: 'purple',
-      changeType: 'positive'
+      changeType: 'neutral'
     },
     {
       title: "Taux d'achèvement",
-      value: '67%',
-      change: '+3%',
+      value: '0%',
+      change: '0%',
       changeLabel: 'vs mois précédent',
       iconClass: 'trending',
       iconColor: 'orange',
-      changeType: 'positive'
+      changeType: 'neutral'
     }
   ];
 
@@ -80,6 +83,68 @@ export class DashboardComponent {
 
   currentPage = 1;
   totalPages = 2;
+
+  ngOnInit(): void {
+    this.loadStats();
+  }
+
+  private loadStats(): void {
+    this.dashboardService.getStats().subscribe({
+      next: (response: DashboardStatsResponse) => {
+        this.stats = [
+          {
+            title: 'Utilisateurs totaux',
+            value: response.utilisateursTotaux.value.toString(),
+            change: `${response.utilisateursTotaux.changePercent}%`,
+            changeLabel: 'vs mois précédent',
+            iconClass: 'users',
+            iconColor: 'blue',
+            changeType: this.getChangeType(response.utilisateursTotaux.changePercent)
+          },
+          {
+            title: 'Projets actifs',
+            value: response.projetsActifs.value.toString(),
+            change: `${response.projetsActifs.changePercent}%`,
+            changeLabel: 'vs mois précédent',
+            iconClass: 'folder',
+            iconColor: 'yellow',
+            changeType: this.getChangeType(response.projetsActifs.changePercent)
+          },
+          {
+            title: 'Projets ce mois',
+            value: response.projetsCeMois.value.toString(),
+            change: `${response.projetsCeMois.changePercent}%`,
+            changeLabel: 'vs mois précédent',
+            iconClass: 'file',
+            iconColor: 'purple',
+            changeType: this.getChangeType(response.projetsCeMois.changePercent)
+          },
+          {
+            title: "Taux d'achèvement",
+            value: `${response.tauxAchevement.value}%`,
+            change: `${response.tauxAchevement.changePercent}%`,
+            changeLabel: 'vs mois précédent',
+            iconClass: 'trending',
+            iconColor: 'orange',
+            changeType: this.getChangeType(response.tauxAchevement.changePercent)
+          }
+        ];
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des stats du dashboard', err);
+      }
+    });
+  }
+
+  private getChangeType(changePercent: number): 'positive' | 'negative' | 'neutral' {
+    if (changePercent > 0) {
+      return 'positive';
+    }
+    if (changePercent < 0) {
+      return 'negative';
+    }
+    return 'neutral';
+  }
 
   addSpecialty(): void {
     if (this.newSpecialty.trim()) {
