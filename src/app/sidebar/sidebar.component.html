@@ -5,15 +5,46 @@
   </div>
 
   <nav class="nav">
-    <a class="nav-item" routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-current="page">Tableau de bord</a>
-    <a class="nav-item" routerLink="/users" routerLinkActive="active">Utilisateurs</a>
-    <a class="nav-item" routerLink="/projects" routerLinkActive="active">Projets</a>
-    <a class="nav-item" routerLink="/steps" routerLinkActive="active">Étapes</a>
-    <a class="nav-item" routerLink="/specialties" routerLinkActive="active">Spécialités</a>
-    <a class="nav-item" routerLink="/professional-requests" routerLinkActive="active">Demandes professionnels</a>
+    <a
+      class="nav-item"
+      routerLink="/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      aria-current="page"
+    >
+      <img src="assets/icons/dashboard-icon.svg" alt="Dashboard" class="nav-icon" />
+      <span>Tableau de bord</span>
+    </a>
+    <a class="nav-item" routerLink="/users" routerLinkActive="active">
+      <img src="assets/icons/users-icon.svg" alt="Utilisateurs" class="nav-icon" />
+      <span>Utilisateurs</span>
+    </a>
+    <a class="nav-item" routerLink="/projects" routerLinkActive="active">
+      <img src="assets/icons/project-icon.svg" alt="Projets" class="nav-icon" />
+      <span>Projets</span>
+    </a>
+    <a class="nav-item" routerLink="/steps" routerLinkActive="active">
+      <img src="assets/icons/step-icon.svg" alt="Étapes" class="nav-icon" />
+      <span>Étapes</span>
+    </a>
+    <a class="nav-item" routerLink="/specialties" routerLinkActive="active">
+      <img src="assets/icons/speciality-icon.svg" alt="Spécialités" class="nav-icon" />
+      <span>Spécialités</span>
+    </a>
+    <a class="nav-item" routerLink="/professional-requests" routerLinkActive="active">
+      <img src="assets/icons/request-icon.svg" alt="Demandes professionnels" class="nav-icon" />
+      <span>Demandes professionnels</span>
+    </a>
   </nav>
 
   <div class="logout">
-    <button type="button" class="logout-btn" aria-label="Déconnexion">🔒 Déconnexion</button>
+    <button
+      type="button"
+      class="logout-btn"
+      aria-label="Déconnexion"
+      (click)="logout()"
+    >
+      🔒 Déconnexion
+    </button>
   </div>
 </aside>

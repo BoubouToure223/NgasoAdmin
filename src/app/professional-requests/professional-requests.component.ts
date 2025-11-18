@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProfessionalRequestsService, ProfessionnelSummaryResponse } from '../services/professional-requests.service';
+import { ProfessionalRequestsService, ProfessionnelSummaryResponse, PagedProfessionnelResponse } from '../services/professional-requests.service';
 
 interface Registration {
   id: number;
@@ -28,8 +28,14 @@ export class ProfessionalRequestsComponent implements OnInit {
   loading = false;
   errorMessage: string | null = null;
 
+  // Pagination
+  page = 0;
+  size = 10;
+  total = 0;
+  totalPages = 0;
+
   ngOnInit(): void {
-    this.loadRegistrations();
+    this.loadRegistrations(0);
   }
 
   private mapToRegistration(p: ProfessionnelSummaryResponse): Registration {
@@ -55,12 +61,18 @@ export class ProfessionalRequestsComponent implements OnInit {
     };
   }
 
-  private loadRegistrations(): void {
+  private loadRegistrations(page: number): void {
     this.loading = true;
     this.errorMessage = null;
 
-    this.service.listPending().subscribe({
-      next: (items) => {
+    this.service.listPending(page, this.size).subscribe({
+      next: (res: PagedProfessionnelResponse) => {
+        this.page = res.page ?? 0;
+        this.size = res.size ?? this.size;
+        this.total = res.total ?? 0;
+        this.totalPages = res.totalPages ?? 0;
+
+        const items = res.items ?? [];
         this.registrations = items.map((p) => this.mapToRegistration(p));
         this.loading = false;
       },
@@ -69,6 +81,13 @@ export class ProfessionalRequestsComponent implements OnInit {
         this.errorMessage = 'Erreur lors du chargement des demandes de professionnels';
       }
     });
+  }
+
+  goToPage(page: number): void {
+    if (page < 0 || (this.totalPages && page >= this.totalPages) || page === this.page) {
+      return;
+    }
+    this.loadRegistrations(page);
   }
 
   viewDocument(filename: string | null): void {
