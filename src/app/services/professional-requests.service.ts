@@ -18,6 +18,15 @@ export interface ProfessionnelSummaryResponse {
   dateInscription: string | null;
 }
 
+export interface PagedProfessionnelResponse {
+  items: ProfessionnelSummaryResponse[];
+  page: number;
+  size: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,8 +34,9 @@ export class ProfessionalRequestsService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = 'http://localhost:8080/api/v1/admin/professionnels/pending';
 
-  listPending(): Observable<ProfessionnelSummaryResponse[]> {
-    return this.http.get<ProfessionnelSummaryResponse[]>(this.apiUrl);
+  listPending(page: number, size: number): Observable<PagedProfessionnelResponse> {
+    const params = { page: page.toString(), size: size.toString() };
+    return this.http.get<PagedProfessionnelResponse>(this.apiUrl, { params });
   }
 
   validate(id: number): Observable<ProfessionnelSummaryResponse> {

@@ -69,7 +69,37 @@
             </tbody>
           </table>
         </div>
-
+        <!-- Pagination -->
+        <div class="pagination">
+          <div class="pagination-buttons">
+            <button
+              class="pagination-btn"
+              type="button"
+              [disabled]="page === 0"
+              (click)="goToPage(page - 1)"
+            >
+              Précédent
+            </button>
+            <button
+              class="pagination-btn"
+              type="button"
+              *ngFor="let _ of [].constructor(totalPages); let idx = index"
+              [class.active]="page === idx"
+              [attr.aria-current]="page === idx ? 'page' : null"
+              (click)="goToPage(idx)"
+            >
+              {{ idx + 1 }}
+            </button>
+            <button
+              class="pagination-btn"
+              type="button"
+              [disabled]="page + 1 >= totalPages"
+              (click)="goToPage(page + 1)"
+            >
+              Suivant
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </main>

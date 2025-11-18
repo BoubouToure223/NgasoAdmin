@@ -228,9 +228,9 @@
 }
 
 /* Pagination */
-.pagination {
+.container .pagination {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 16px 0;
 }
@@ -257,14 +257,14 @@
 }
 
 .pagination-btn:hover {
-  border-color: #3b82f6;
+  border-color: #3f51b5;
   color: #3b82f6;
 }
 
 .pagination-btn.active {
-  background-color: #3b82f6;
+  background-color: #3f51b5;
   color: white;
-  border-color: #3b82f6;
+  border-color: #3f51b5;
 }
 
 .pagination-btn:disabled {
@@ -295,8 +295,9 @@
     min-width: 900px;
   }
 
-  .pagination {
+  .container .pagination {
     flex-direction: column;
     gap: 16px;
+    align-items: flex-end;
   }
 }
