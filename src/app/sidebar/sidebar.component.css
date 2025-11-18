@@ -13,4 +13,4 @@
   filter: invert(23%) sepia(70%) saturate(1657%) hue-rotate(211deg) brightness(92%) contrast(95%);
 }
 .logout{margin-top:auto;border-top:1px solid var(--bg-200,#ebebeb);padding:12px 16px}
-.logout-btn{all:unset;cursor:pointer;color:#5c5c5c}
+.logout-btn{all:unset;cursor:pointer;color:#5c5c5c;display:flex;align-items:center;gap:12px}
