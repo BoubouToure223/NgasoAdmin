@@ -6,100 +6,107 @@
         <h3 class="card-title">Demandes d'inscription de professionnels</h3>
       </div>
       <div class="card-content">
-        <div class="table-container">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Nom complet</th>
-                <th>Spécialité</th>
-                <th>Téléphone</th>
-                <th>Email</th>
-                <th>Date d'inscription</th>
-                <th>Document justificatif</th>
-                <th>Statut</th>
-                <th class="text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let registration of registrations">
-                <td class="font-medium">{{ registration.name }}</td>
-                <td>{{ registration.specialty }}</td>
-                <td>{{ registration.telephone }}</td>
-                <td>{{ registration.email }}</td>
-                <td>{{ registration.date }}</td>
-                <td>
-                  <button
-                    class="btn-link"
-                    (click)="viewDocument(registration.documentFilename)"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                      <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                    Voir
-                  </button>
-                </td>
-                <td>
-                  <span class="badge badge-warning">{{ registration.status }}</span>
-                </td>
-                <td>
-                  <div class="action-buttons">
+        <ng-container *ngIf="registrations.length > 0; else noRequests">
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nom complet</th>
+                  <th>Spécialité</th>
+                  <th>Téléphone</th>
+                  <th>Email</th>
+                  <th>Date d'inscription</th>
+                  <th>Document justificatif</th>
+                  <th>Statut</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let registration of registrations">
+                  <td class="font-medium">{{ registration.name }}</td>
+                  <td>{{ registration.specialty }}</td>
+                  <td>{{ registration.telephone }}</td>
+                  <td>{{ registration.email }}</td>
+                  <td>{{ registration.date }}</td>
+                  <td>
                     <button
-                      class="btn btn-success"
-                      (click)="validateRegistration(registration.id, registration.name)"
+                      class="btn-link"
+                      (click)="viewDocument(registration.documentFilename)"
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12"></polyline>
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
                       </svg>
-                      Valider
+                      Voir
                     </button>
-                    <button
-                      class="btn btn-danger"
-                      (click)="rejectRegistration(registration.id, registration.name)"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                      Rejeter
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- Pagination -->
-        <div class="pagination">
-          <div class="pagination-buttons">
-            <button
-              class="pagination-btn"
-              type="button"
-              [disabled]="page === 0"
-              (click)="goToPage(page - 1)"
-            >
-              Précédent
-            </button>
-            <button
-              class="pagination-btn"
-              type="button"
-              *ngFor="let _ of [].constructor(totalPages); let idx = index"
-              [class.active]="page === idx"
-              [attr.aria-current]="page === idx ? 'page' : null"
-              (click)="goToPage(idx)"
-            >
-              {{ idx + 1 }}
-            </button>
-            <button
-              class="pagination-btn"
-              type="button"
-              [disabled]="page + 1 >= totalPages"
-              (click)="goToPage(page + 1)"
-            >
-              Suivant
-            </button>
+                  </td>
+                  <td>
+                    <span class="badge badge-warning">{{ registration.status }}</span>
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="btn btn-success"
+                        (click)="validateRegistration(registration.id, registration.name)"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Valider
+                      </button>
+                      <button
+                        class="btn btn-danger"
+                        (click)="rejectRegistration(registration.id, registration.name)"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        Rejeter
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
+          <!-- Pagination -->
+          <div class="pagination">
+            <div class="pagination-buttons">
+              <button
+                class="pagination-btn"
+                type="button"
+                [disabled]="page === 0"
+                (click)="goToPage(page - 1)"
+              >
+                Précédent
+              </button>
+              <button
+                class="pagination-btn"
+                type="button"
+                *ngFor="let _ of [].constructor(totalPages); let idx = index"
+                [class.active]="page === idx"
+                [attr.aria-current]="page === idx ? 'page' : null"
+                (click)="goToPage(idx)"
+              >
+                {{ idx + 1 }}
+              </button>
+              <button
+                class="pagination-btn"
+                type="button"
+                [disabled]="page + 1 >= totalPages"
+                (click)="goToPage(page + 1)"
+              >
+                Suivant
+              </button>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #noRequests>
+          <div class="empty-state">
+            Aucune demande d'inscription pour le moment.
+          </div>
+        </ng-template>
       </div>
     </div>
   </main>

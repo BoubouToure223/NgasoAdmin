@@ -227,3 +227,9 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.empty-state {
+  padding: 1rem 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}

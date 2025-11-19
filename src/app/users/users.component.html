@@ -78,92 +78,106 @@
 
     <!-- Table: Particuliers -->
     <div class="table-wrapper" *ngIf="activeTab === 'particuliers'">
-      <div class="table-container">
-        <table class="users-table tbl" role="table">
-          <thead>
-            <tr class="table-header">
-              <th class="th-nom" scope="col">Nom complet</th>
-              <th class="th-email" scope="col">Email</th>
-              <th class="th-telephone" scope="col">Téléphone</th>
-              <th class="th-adresse" scope="col">Adresse</th>
-              <th class="th-projets" scope="col">Projets</th>
-              <th class="th-inscription" scope="col">Inscription</th>
-              <th class="th-statut" scope="col">Statut</th>
-              <th class="th-actions" scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table-row" *ngFor="let user of filteredNovices">
-              <td class="td-nom">{{ user.prenom }} {{ user.nom }}</td>
-              <td class="td-email">{{ user.email }}</td>
-              <td class="td-telephone">{{ user.telephone }}</td>
-              <td class="td-adresse">{{ user.adresse }}</td>
-              <td class="td-projets">{{ user.nombreProjetsNovice }}</td>
-              <td class="td-inscription">{{ user.dateInscription | date: 'dd/MM/yyyy' }}</td>
-              <td class="td-statut">
-                <span class="badge" [ngClass]="user.actif ? 'badge-actif' : 'badge-inactif'">
-                  {{ user.actif ? 'Actif' : 'Inactif' }}
-                </span>
-              </td>
-              <td class="td-actions">
-                <button
-                  class="action-button"
-                  [ngClass]="user.actif ? 'danger' : 'success'"
-                  type="button"
-                  (click)="toggleUserActive(user)"
-                  [attr.aria-label]="user.actif ? 'Désactiver l\'utilisateur' : 'Activer l\'utilisateur'"
-                >
-                  <div class="button-text">{{ user.actif ? 'Désactiver' : 'Activer' }}</div>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <ng-container *ngIf="filteredNovices.length > 0; else noNovices">
+        <div class="table-container">
+          <table class="users-table tbl" role="table">
+            <thead>
+              <tr class="table-header">
+                <th class="th-nom" scope="col">Nom complet</th>
+                <th class="th-email" scope="col">Email</th>
+                <th class="th-telephone" scope="col">Téléphone</th>
+                <th class="th-adresse" scope="col">Adresse</th>
+                <th class="th-projets" scope="col">Projets</th>
+                <th class="th-inscription" scope="col">Inscription</th>
+                <th class="th-statut" scope="col">Statut</th>
+                <th class="th-actions" scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-row" *ngFor="let user of filteredNovices">
+                <td class="td-nom">{{ user.prenom }} {{ user.nom }}</td>
+                <td class="td-email">{{ user.email }}</td>
+                <td class="td-telephone">{{ user.telephone }}</td>
+                <td class="td-adresse">{{ user.adresse }}</td>
+                <td class="td-projets">{{ user.nombreProjetsNovice }}</td>
+                <td class="td-inscription">{{ user.dateInscription | date: 'dd/MM/yyyy' }}</td>
+                <td class="td-statut">
+                  <span class="badge" [ngClass]="user.actif ? 'badge-actif' : 'badge-inactif'">
+                    {{ user.actif ? 'Actif' : 'Inactif' }}
+                  </span>
+                </td>
+                <td class="td-actions">
+                  <button
+                    class="action-button"
+                    [ngClass]="user.actif ? 'danger' : 'success'"
+                    type="button"
+                    (click)="toggleUserActive(user)"
+                    [attr.aria-label]="user.actif ? 'Désactiver l\'utilisateur' : 'Activer l\'utilisateur'"
+                  >
+                    <div class="button-text">{{ user.actif ? 'Désactiver' : 'Activer' }}</div>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+      <ng-template #noNovices>
+        <div class="empty-state">
+          Aucun particulier pour le moment.
+        </div>
+      </ng-template>
     </div>
 
-    <!-- Table: Professionnels (pour l'instant même contenu, à connecter à l'API plus tard) -->
+    <!-- Table: Professionnels -->
     <div class="table-wrapper" *ngIf="activeTab === 'professionnels'">
-      <div class="table-container">
-        <table class="users-table tbl" role="table">
-          <thead>
-            <tr class="table-header">
-              <th class="th-nom" scope="col">Nom complet</th>
-              <th class="th-email" scope="col">Email</th>
-              <th class="th-telephone" scope="col">Téléphone</th>
-              <th class="th-adresse" scope="col">Adresse</th>
-              <th class="th-inscription" scope="col">Inscription</th>
-              <th class="th-statut" scope="col">Statut</th>
-              <th class="th-actions" scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table-row" *ngFor="let user of filteredProfessionnels">
-              <td class="td-nom">{{ user.prenom }} {{ user.nom }}</td>
-              <td class="td-email">{{ user.email }}</td>
-              <td class="td-telephone">{{ user.telephone }}</td>
-              <td class="td-adresse">{{ user.adresse }}</td>
-              <td class="td-inscription">{{ user.dateInscription | date: 'dd/MM/yyyy' }}</td>
-              <td class="td-statut">
-                <span class="badge" [ngClass]="user.actif ? 'badge-actif' : 'badge-inactif'">
-                  {{ user.actif ? 'Actif' : 'Inactif' }}
-                </span>
-              </td>
-              <td class="td-actions">
-                <button
-                  class="action-button"
-                  [ngClass]="user.actif ? 'danger' : 'success'"
-                  type="button"
-                  (click)="toggleUserActive(user)"
-                  [attr.aria-label]="user.actif ? 'Désactiver l\'utilisateur' : 'Activer l\'utilisateur'"
-                >
-                  <div class="button-text">{{ user.actif ? 'Désactiver' : 'Activer' }}</div>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <ng-container *ngIf="filteredProfessionnels.length > 0; else noProfessionnels">
+        <div class="table-container">
+          <table class="users-table tbl" role="table">
+            <thead>
+              <tr class="table-header">
+                <th class="th-nom" scope="col">Nom complet</th>
+                <th class="th-email" scope="col">Email</th>
+                <th class="th-telephone" scope="col">Téléphone</th>
+                <th class="th-adresse" scope="col">Adresse</th>
+                <th class="th-inscription" scope="col">Inscription</th>
+                <th class="th-statut" scope="col">Statut</th>
+                <th class="th-actions" scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-row" *ngFor="let user of filteredProfessionnels">
+                <td class="td-nom">{{ user.prenom }} {{ user.nom }}</td>
+                <td class="td-email">{{ user.email }}</td>
+                <td class="td-telephone">{{ user.telephone }}</td>
+                <td class="td-adresse">{{ user.adresse }}</td>
+                <td class="td-inscription">{{ user.dateInscription | date: 'dd/MM/yyyy' }}</td>
+                <td class="td-statut">
+                  <span class="badge" [ngClass]="user.actif ? 'badge-actif' : 'badge-inactif'">
+                    {{ user.actif ? 'Actif' : 'Inactif' }}
+                  </span>
+                </td>
+                <td class="td-actions">
+                  <button
+                    class="action-button"
+                    [ngClass]="user.actif ? 'danger' : 'success'"
+                    type="button"
+                    (click)="toggleUserActive(user)"
+                    [attr.aria-label]="user.actif ? 'Désactiver l\'utilisateur' : 'Activer l\'utilisateur'"
+                  >
+                    <div class="button-text">{{ user.actif ? 'Désactiver' : 'Activer' }}</div>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+      <ng-template #noProfessionnels>
+        <div class="empty-state">
+          Aucun professionnel pour le moment.
+        </div>
+      </ng-template>
     </div>
 
     <!-- Confirmation de désactivation -->
@@ -186,7 +200,12 @@
     </div>
 
     <!-- Footer Pagination -->
-    <div class="footer-pagination" role="navigation" aria-label="Pagination">
+    <div
+      class="footer-pagination"
+      role="navigation"
+      aria-label="Pagination"
+      *ngIf="(activeTab === 'particuliers' && filteredNovices.length > 0) || (activeTab === 'professionnels' && filteredProfessionnels.length > 0)"
+    >
       <div class="pagination-controls">
         <button
           class="pagination-button"

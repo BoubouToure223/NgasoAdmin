@@ -39,71 +39,79 @@
     </div>
   </div>
 
-  <!-- Table -->
-  <div class="table-container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Propriétaire</th>
-          <th>Localisation</th>
-          <th>Budget</th>
-          <th>Étape</th>
-          <th>Progression</th>
-          <th>Création<th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let project of filteredProjects">
-          <td class="project-name">{{ project.nom }}</td>
-          <td>{{ project.proprietaire }}</td>
-          <td>{{ project.localisation }}</td>
-          <td>{{ project.budget }}</td>
-          <td>
-            <span class="etape-badge" [ngClass]="getEtapeClass(project.etape)">
-              {{ project.etape }}
-            </span>
-          </td>
-          <td>
-            <div class="progress-container">
-              <div class="progress-bar">
-                <div class="progress-fill" [style.width.%]="project.progression"></div>
+  <!-- Table + Pagination -->
+  <ng-container *ngIf="filteredProjects.length > 0; else noProjects">
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Propriétaire</th>
+            <th>Localisation</th>
+            <th>Budget</th>
+            <th>Étape</th>
+            <th>Progression</th>
+            <th>Création<th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let project of filteredProjects">
+            <td class="project-name">{{ project.nom }}</td>
+            <td>{{ project.proprietaire }}</td>
+            <td>{{ project.localisation }}</td>
+            <td>{{ project.budget }}</td>
+            <td>
+              <span class="etape-badge" [ngClass]="getEtapeClass(project.etape)">
+                {{ project.etape }}
+              </span>
+            </td>
+            <td>
+              <div class="progress-container">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="project.progression"></div>
+                </div>
+                <span class="progress-text">{{ project.progression }}%</span>
               </div>
-              <span class="progress-text">{{ project.progression }}%</span>
-            </div>
-          </td>
-          <td>{{ project.miseAJour }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Pagination -->
-  <div class="pagination">
-    <div class="pagination-buttons">
-      <button
-        class="pagination-btn"
-        [disabled]="page === 0"
-        (click)="goToPage(page - 1)"
-      >
-        Précédent
-      </button>
-      <button
-        class="pagination-btn"
-        *ngFor="let _ of [].constructor(totalPages); let idx = index"
-        [class.active]="page === idx"
-        [attr.aria-current]="page === idx ? 'page' : null"
-        (click)="goToPage(idx)"
-      >
-        {{ idx + 1 }}
-      </button>
-      <button
-        class="pagination-btn"
-        [disabled]="page + 1 >= totalPages"
-        (click)="goToPage(page + 1)"
-      >
-        Suivant
-      </button>
+            </td>
+            <td>{{ project.miseAJour }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <div class="pagination-buttons">
+        <button
+          class="pagination-btn"
+          [disabled]="page === 0"
+          (click)="goToPage(page - 1)"
+        >
+          Précédent
+        </button>
+        <button
+          class="pagination-btn"
+          *ngFor="let _ of [].constructor(totalPages); let idx = index"
+          [class.active]="page === idx"
+          [attr.aria-current]="page === idx ? 'page' : null"
+          (click)="goToPage(idx)"
+        >
+          {{ idx + 1 }}
+        </button>
+        <button
+          class="pagination-btn"
+          [disabled]="page + 1 >= totalPages"
+          (click)="goToPage(page + 1)"
+        >
+          Suivant
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noProjects>
+    <div class="empty-state">
+      Aucun projet pour le moment.
+    </div>
+  </ng-template>
 </div>
