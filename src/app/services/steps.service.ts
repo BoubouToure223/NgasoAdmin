@@ -66,4 +66,21 @@ export class StepsService {
   deleteModeleEtape(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  uploadProfileImage(modeleId: number, file: File): Observable<IllustrationResponse> {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    return this.http.post<IllustrationResponse>(
+      `${environment.apiBaseUrl}/api/v1/admin/modeles-etapes/${modeleId}/image-profil`,
+      formData
+    );
+  }
+
+  getProfileImage(modeleId: number): Observable<string> {
+    return this.http.get(`${environment.apiBaseUrl}/api/v1/admin/modeles-etapes/${modeleId}/image-profil`, {
+      responseType: 'text'
+    });
+  }
 }
+

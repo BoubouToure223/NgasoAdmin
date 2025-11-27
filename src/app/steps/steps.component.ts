@@ -67,6 +67,15 @@ export class StepsComponent implements OnInit, OnDestroy {
     submitting: false
   };
 
+  profileForm = {
+    file: null as File | null,
+    submitting: false
+  };
+
+  showProfileUploadForm = false;
+
+  currentProfileUrl: string | null = null;
+
   ngOnInit(): void {
     this.loadSteps();
     this.loadSpecialties();
@@ -244,8 +253,10 @@ export class StepsComponent implements OnInit, OnDestroy {
     this.currentStepName = step.name;
     this.isIllustrationsOpen = true;
     this.showAddIllustrationForm = false;
+    this.showProfileUploadForm = false;
     this.illustrations = [];
     this.loadIllustrations(step.id);
+    this.loadProfileImage(step.id);
     this.resetIllustrationForm();
     this.setBodyScrollLock(true);
   }
@@ -253,12 +264,20 @@ export class StepsComponent implements OnInit, OnDestroy {
   closeIllustrations() {
     this.isIllustrationsOpen = false;
     this.showAddIllustrationForm = false;
+    this.showProfileUploadForm = false;
     this.currentStepId = null;
     this.updateBodyScrollLock();
   }
 
   toggleAddIllustration(show: boolean) {
     this.showAddIllustrationForm = show;
+  }
+
+  toggleProfileUpload(show: boolean) {
+    this.showProfileUploadForm = show;
+    if (!show) {
+      this.resetProfileForm();
+    }
   }
 
   onUploadAreaClick() {
@@ -269,6 +288,13 @@ export class StepsComponent implements OnInit, OnDestroy {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
       this.illustrationForm.file = input.files[0];
+    }
+  }
+
+  onProfileFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      this.profileForm.file = input.files[0];
     }
   }
 
@@ -311,6 +337,26 @@ export class StepsComponent implements OnInit, OnDestroy {
       },
       error: () => {
         this.illustrationForm.submitting = false;
+      }
+    });
+  }
+
+  submitProfileImage() {
+    if (!this.currentStepId || !this.profileForm.file) {
+      return;
+    }
+
+    this.profileForm.submitting = true;
+    this.stepsService.uploadProfileImage(this.currentStepId, this.profileForm.file).subscribe({
+      next: () => {
+        this.profileForm.submitting = false;
+        this.toggleProfileUpload(false);
+        if (this.currentStepId) {
+          this.loadProfileImage(this.currentStepId);
+        }
+      },
+      error: () => {
+        this.profileForm.submitting = false;
       }
     });
   }
@@ -364,6 +410,25 @@ export class StepsComponent implements OnInit, OnDestroy {
     if (this.fileInput?.nativeElement) {
       this.fileInput.nativeElement.value = '';
     }
+  }
+
+  private resetProfileForm() {
+    this.profileForm = {
+      file: null,
+      submitting: false
+    };
+  }
+
+  private loadProfileImage(modeleId: number) {
+    this.currentProfileUrl = null;
+    this.stepsService.getProfileImage(modeleId).subscribe({
+      next: (url) => {
+        this.currentProfileUrl = url;
+      },
+      error: () => {
+        this.currentProfileUrl = null;
+      }
+    });
   }
 
   private loadIllustrations(modeleId: number) {
