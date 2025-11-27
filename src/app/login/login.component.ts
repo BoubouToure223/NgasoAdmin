@@ -46,7 +46,8 @@ export class LoginComponent {
       next: (res) => {
         localStorage.setItem('ngaso_token', res.token);
         localStorage.setItem('ngaso_role', res.role);
-        localStorage.setItem('ngaso_user_id', String(res.id));
+        localStorage.setItem('ngaso_user_id', String(res.userId));
+        localStorage.setItem('ngaso_refresh_token', res.refreshToken);
 
         this.loading = false;
         this.router.navigateByUrl('/dashboard');

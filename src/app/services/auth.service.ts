@@ -10,10 +10,11 @@ export interface AuthLoginRequest {
 }
 
 export interface AuthLoginResponse {
-  id: number;
+  userId: number;
   role: string;
   message: string;
   token: string;
+  refreshToken: string;
 }
 
 @Injectable({
@@ -29,9 +30,15 @@ export class AuthService {
     return this.http.post<AuthLoginResponse>(`${this.apiUrl}/auth/login`, payload);
   }
 
+  refresh(refreshToken: string): Observable<AuthLoginResponse> {
+    return this.http.post<AuthLoginResponse>(`${this.apiUrl}/auth/refresh`, { refreshToken });
+  }
+
   logout(): void {
     localStorage.removeItem('ngaso_token');
     localStorage.removeItem('ngaso_role');
+    localStorage.removeItem('ngaso_refresh_token');
+    localStorage.removeItem('ngaso_user_id');
     this.router.navigate(['/login']);
   }
 }
