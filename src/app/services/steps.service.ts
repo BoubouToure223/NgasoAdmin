@@ -47,8 +47,13 @@ export class StepsService {
     file: File
   ): Observable<IllustrationResponse> {
     const formData = new FormData();
-    const jsonBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-    formData.append('data', jsonBlob);
+    const payload = {
+      titre: data.titre,
+      description: data.description ?? ''
+    };
+    const jsonBlob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    // Provide a filename to ensure proper part handling in some servers
+    formData.append('data', jsonBlob, 'data.json');
     formData.append('image', file);
 
     return this.http.post<IllustrationResponse>(`${this.baseUrl}/${modeleId}/illustrations`, formData);

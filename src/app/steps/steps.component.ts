@@ -307,13 +307,13 @@ export class StepsComponent implements OnInit, OnDestroy {
   }
 
   submitIllustration() {
-    if (!this.currentStepId || !this.illustrationForm.titre.trim() || !this.illustrationForm.file) {
+    if (!this.currentStepId || !this.illustrationForm.file) {
       return;
     }
 
     const data = {
-      titre: this.illustrationForm.titre.trim(),
-      description: this.illustrationForm.description.trim() || undefined
+      titre: (this.illustrationForm.titre || '').trim(),
+      description: (this.illustrationForm.description || '').trim() || undefined
     };
 
     this.illustrationForm.submitting = true;
