@@ -270,7 +270,7 @@
         <div class="form-container" style="margin-top: 1.5rem;" *ngIf="showAddIllustrationForm">
           <h3 class="form-title">Nouvelle illustration</h3>
           <div class="form-group">
-            <label class="form-label">Titre <span class="required">*</span></label>
+            <label class="form-label">Titre</label>
             <input
               class="form-input"
               type="text"
@@ -303,7 +303,7 @@
               class="primary-button"
               type="button"
               (click)="submitIllustration()"
-              [disabled]="illustrationForm.submitting || !illustrationForm.titre?.trim() || !illustrationForm.file"
+              [disabled]="illustrationForm.submitting || !illustrationForm.file"
             >
               {{ illustrationForm.submitting ? "Ajout en cours..." : "Ajouter l'illustration" }}
             </button>
